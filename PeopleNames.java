@@ -5,7 +5,7 @@ import javax.swing.border.BevelBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
+import java.nio.channels.ScatteringByteChannel;
 
 
 class MyFrame extends JFrame implements ActionListener {
@@ -25,21 +25,45 @@ class MyFrame extends JFrame implements ActionListener {
     private JLabel Ff;
     private JLabel Ii;
     private JLabel Oo;
-
+    private int count = 0;
+    String text ="";
 
     public void actionPerformed(ActionEvent e){
         if (e.getSource() == ADD) {
 
             String [] FIO = T.getText().split(" ");
-            F.setText(F.getText() +"\n" + FIO[0]);
-            I.setText(I.getText() +"\n" + FIO[1]);
-            O.setText(O.getText() +"\n" + FIO[2]);
+            try {
+                F.setText(F.getText() + "\n" + FIO[0]);
+                I.setText(I.getText() + "\n" + FIO[1]);
+                O.setText(O.getText() + "\n" + FIO[2]);
+            }
+            catch(Exception ex){
+                //System.out.println(ex.getMessage());
+                JOptionPane.showMessageDialog(null,
+                        "You have entered non-correct names!!!",
+                        "Error:",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+            count += 1;
+            if (count>=10){
+                text += T.getText() + "\n";
+                JOptionPane.showMessageDialog(null,
+                        text,
+                        "You input names:",
+                        JOptionPane.PLAIN_MESSAGE);
+            }
         }
         else{
             T.setText("");
+            F.setText("");
+            I.setText("");
+            O.setText("");
+            count = 0;
+            text ="";
         }
     }
-    
+
+
     public void labels(){
         Ff = new JLabel();
         Ff.setBounds(12,130,100,20);
@@ -54,7 +78,7 @@ class MyFrame extends JFrame implements ActionListener {
 
     MyFrame(){
         super("FIO of people");
-        setBounds(350,250,570, 380);
+        setBounds(500,250,570, 380);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
         setLayout(null);
@@ -106,7 +130,6 @@ class MyFrame extends JFrame implements ActionListener {
         add(Oo);
         setVisible(true);
     }
-
 }
 
 public class PeopleNames {
